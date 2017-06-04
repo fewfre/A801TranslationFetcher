@@ -1,0 +1,8 @@
+== V1.1 - 4 June 2017 ==
+- Now properly displays all characters.
+- Fleshed out side design a bit more
+- Certain translation syntax is now highlighted: %1 type variables, (male|female) syntax, and tags.
+
+
+== V1.0 - 3 June 2017 ==
+- Basic structure; scripts works from start to finish and can fetch and display file.

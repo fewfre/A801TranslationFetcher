@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Atelier 801 Translation File Retreiver</title>
+	<link rel="icon" href="/favicon.ico" />
+	<meta charset="UTF-8">
+	
+	<meta name="author" content="Fewfre" />
+	
+	<link rel="stylesheet" type="text/css" href="http://projects.fewfre.com/a801/css/stickyfooter.css" />
+	<link rel="stylesheet" type="text/css" href="css/layout.css" />
+	<link rel="stylesheet" type="text/css" href="css/flow.css" />
+</head>
+<body>
+	<div id="wrapper">
+		<header>
+			<nav id="nav"></nav>
+			<h1>Atelier 801 Translation File Retreiver</h1>
+		</header>
+		<div id="content">
+			<section>
+				<p>Fetches translation files for Atelier 801 games, decompresses them, then displays them.</p>
+			</section>
+			<section>
+				<div id="game-step" class="step active">
+					<h2>Choose the game</h2>
+					
+					<div class="step-cont">
+						<button class="step-btn js-game-chosen" data-game="transformice">Transformice*</button>
+						<button class="step-btn js-game-chosen" data-game="deadmaze">Dead Maze^</button>
+					</div>
+					
+					<p>*Transformice file also contains translations for Fortoresse, Bouboum, and Nekodancer.</p>
+					<p>^There's a lot of Transformice messages in the Dead Maze file; it's recommended to go to the bottom and scroll up.</p>
+				</div>
+				<div id="lang-step" class="step">
+					<h2>Language</h2>
+					<p>Choose the language file you wish to see.</p>
+					
+					<div class="step-cont">
+						<button class="step-btn js-lang-chosen" data-lang="en" title="English">English</button>
+						<button class="step-btn js-lang-chosen" data-lang="fr" title="French">Français</button>
+						<button class="step-btn js-lang-chosen" data-lang="br" title="Brazilian Portuguese">Português do Brasil</button>
+						<button class="step-btn js-lang-chosen" data-lang="es" title="Spanish">Español</button>
+						<button class="step-btn js-lang-chosen" data-lang="ro" title="Romanian">Română</button>
+					</div>
+					
+					<p>
+						For other languages enter your country code below.
+						Sorry to those I did not list above, but as this is a simple tool I didn't feel like listing them all.
+					</p>
+					<input id="lang_code" type="text" minlength="2" maxlength="2" /> <button class="js-lang-chosen-custom">Submit</button>
+				</div>
+				<div id="fetch-step" class="step">
+					<h2>Fetching...</h2>
+					<p>Script is pulling translation file, decompressing it, and formatting it. This may take a few seconds.</p>
+				</div>
+				<div id="result-step" class="step i18n-highlight">
+					<h2>Result <button class="js-reset">Reset</button></h2>
+					<p>
+						<strong>Basics</strong>:
+						<ul>
+							<li><code class="subst">%num</code> (ex: <code class="subst">%1</code>) represents a dynamic value (number / username) that will be injected into the string at run time.
+							<li><code class="sex">(<span class="m">male</span>|<span class="f">female</span>)</code> allows sex-specific text (either may be omitted to do just male/female text).
+							<li>Tags (ex: <span class="tag">&lt;V&gt;</span>) are shown but disabled. Two exceptions are <code>img</code> tags and <code>font</code> tags (when they have a color; otherwise ignored).
+						</ul>
+					</p>
+					<div id="result"></div>
+				</div>
+				<div id="error-step" class="step">
+					<h2>Error</h2>
+					<div id="error"></div>
+					<div class="step-cont">
+						<button class="step-btn js-reset">Reset</button>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+	<footer>
+		Code by Fewfre under the GNU GENERAL PUBLIC LICENSE, with the open source code located <a href="https://github.com/fewfre/A801TranslationFetcher">on GitHub</a>.
+		<br />Big thanks to <a href="http://atelier801.com/profile?pr=Alexunutrei">Alexunutrei</a> for helping me understand the file encryption and how to parse the data.
+		<span class="flattr-cont"><script id='fb83np7'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//button.flattr.com/view/?fid=x29v5q&button=compact&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=20;f.width=110;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb83np7');</script></span>
+	</footer>
+	<script src="js/index.js"></script>
+</body>
+</html>

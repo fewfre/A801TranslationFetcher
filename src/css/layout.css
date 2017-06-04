@@ -1,0 +1,43 @@
+body {
+	width: 1065px;
+	margin: 0 auto;
+	background: url('../images/background.jpg') repeat;
+}
+#wrapper {
+	background: #f2f2f2;
+	padding: 0 5px;
+	outline: #c2c2c2 2px solid;
+}
+header {
+	padding: 8px 25px 0;
+	margin: 0 auto;
+	border-bottom: 5px solid currentColor;
+}
+#content {
+	
+}
+section {
+	margin: 15px 0;
+	padding: 5px 10px 35px;
+	background: #f2f2f2;
+	background: url('http://www.transformice.com/wp-content/themes/Themice/images/lignepierre.png') no-repeat bottom;
+	background-size: 100% auto;
+}
+footer {
+	box-sizing: border-box;
+	font-size: 75%;
+	color: #BBB;
+	background: #555;
+	border-top: 2px solid currentColor;
+	padding: 5px 5px 5px;
+	clear: both;
+}
+.flattr-cont {
+	float: right;
+}
+p {
+	margin: 4px 0;
+}
+ul {
+	margin: 10px 0;
+}

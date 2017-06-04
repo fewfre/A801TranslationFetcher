@@ -1,0 +1,66 @@
+.step {
+	display: none;
+}
+.step.active {
+	display: block;
+}
+.step-cont {
+	padding: 25px;
+	text-align: center;
+}
+.step-btn {
+	padding: 15px 45px;
+}
+
+.result-table {
+	border-collapse: collapse;
+	max-width: 100%;
+	border: 1px solid #b2af9c;
+}
+.result-table tr {
+	border: 1px solid #b2af9c;
+}
+.result-table th, .result-table td {
+	border: 1px solid #b2af9c;
+	padding: 0.2em;
+}
+.result-table thead th {
+	text-align: center;
+	color: #DDD;
+	background: #444;
+}
+.result-table tbody th {
+	text-align: right;
+}
+.result-table tbody th .overflow {
+	max-width: 225px;
+	overflow-x: auto;
+}
+.result-table tbody td {
+	text-align: left;
+}
+
+.result-table xmp, .result-table pre {
+	max-width: 800px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+.i18n-highlight .subst {
+	color: red;
+}
+.i18n-highlight .sex {
+	color: brown;
+}
+.i18n-highlight .sex .m {
+	color: blue;
+}
+.i18n-highlight .sex .f {
+	color: hotpink;
+}
+.i18n-highlight .tag {
+	color: green;
+}
+.i18n-highlight .attr {
+	font-size: 80%;
+	color: teal;
+}
