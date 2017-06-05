@@ -19,7 +19,7 @@ if(isset($_GET["game"])) {
 			$game = $_GET["game"];
 			break;
 		default:
-			sendError("No recognized game '{$_GET["game"]}'", $format);
+			sendError(400, "No recognized game '{$_GET["game"]}'", $format);
 			break;
 	}
 }
@@ -46,11 +46,11 @@ try {
 	$data = externalFetch($url);
 	$data = gzuncompress($data);
 	if(!$data) {
-		sendError("No lang file found for '$game': $language", $format);
+		sendError(400, "No lang file found for '$game': $language", $format);
 	}
 }
 catch (Exception $e) {
-	sendError("No lang file found for '$game': $language", $format);
+	sendError(400, "No lang file found for '$game': $language", $format);
 }
 // $data = utf8_decode($data);
 // iconv("UTF-8", "CP1252", $data);
@@ -72,8 +72,6 @@ switch($format) {
 		// mb_internal_encoding('UTF-8');
 		// $data=array_map('utf8_encode',$data);
 		
-		// Make a data object that returns state
-		$data = array( "error" => false, "data" => $data );
 		// Convert array to json
 		$data = json_encode($data);
 		break;
@@ -134,16 +132,18 @@ function clean($str){
 	return isset($matches[0]) ? implode($matches[0]) : '';
 }
 
-function sendError($msg, $format) {
-	switch($format) {
-		case "json":
-			header('Content-type: application/json');
-			echo json_encode(array( "error" => true, "error_msg" => $msg, "data" => null ));
-			break;
-		case "text":
-		default:
+function sendError($code, $msg, $format) {
+	header("HTTP/1.0 $code $msg");
+	// switch($format) {
+	// 	case "json":
+	// 		header('Content-type: application/json');
+	// 		echo json_encode(array( "error" => true, "error_msg" => $msg ));
+	// 		break;
+	// 	case "text":
+	// 	default:
 			echo $msg;
-			break;
-	}
+	// 		break;
+	// }
+	http_response_code($code);
 	exit;
 }

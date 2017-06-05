@@ -2,6 +2,7 @@
 - Now properly displays all characters.
 - Fleshed out side design a bit more
 - Certain translation syntax is now highlighted: %1 type variables, (male|female) syntax, and tags.
+- Fixed script to properly show error message.
 
 
 == V1.0 - 3 June 2017 ==

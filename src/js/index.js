@@ -29,7 +29,6 @@
 	function doRetrieval() {
 		setActiveStep("fetch-step");
 		fetchI18nData(game, lang, (pData) => {
-			// if(!pData.error) { addDataToPage(pData.data); } else { doDataRetreivalError(pData.error_msg); }
 			addDataToPage(pData);
 		}, doDataRetreivalError);
 	}
@@ -76,13 +75,10 @@
 			tMessage = highlightStringSubstitution(tMessage);
 			tMessage = highlightSex(tMessage);
 			tMessage = `<pre>${tMessage}</pre>`;
-			// tMessage = `<xmp>${tMessage}</xmp>`;
 			tHTML += `<tr><th><div class="overflow">${tKey}</div></th><td>${tMessage}</td></tr>`;
-			// tHTML += `<tr><td>${tLine}</td></tr>`;
 		}
 		tHTML += "</tbody>";
 		tHTML += "</table>";
-		// tHTML = `<pre><xmp>${tHTML}</xmp></pre>`;
 		document.querySelector("#result").innerHTML = tHTML;
 	}
 	
@@ -157,7 +153,7 @@
 		return pString.replace(/\((.*?)\|(.*?)\)/g, "<span class='sex'>(<span class='m'>$1</span>|<span class='f'>$2</span>)</span>");
 	}
 	
-	// pData = { url:String, method:String="GET", dataType:String="text", contentType?:String, success?:String->Void, fail?:String->Int->Void }
+	// pData = { url:String, method:String="GET", dataType:String="text", contentType?:String, success?:String->Void, fail?:String->Void }
 	function fewAjax(pData) {
 		pData.method = pData.method || "GET";
 		pData.dataType = pData.dataType || "text";
@@ -181,7 +177,7 @@
 					}
 				}
 				else {
-					if(pData.fail) { pData.fail("Error "+xmlhttp.status); }
+					if(pData.fail) { pData.fail("Error "+xmlhttp.status+": "+xmlhttp.responseText); }
 				}
 			}
 		};
