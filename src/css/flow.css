@@ -64,3 +64,9 @@
 	font-size: 80%;
 	color: teal;
 }
+.i18n-highlight .speaker {
+	color: #555;
+}
+.i18n-highlight .d-break {
+	color: #f50;
+}

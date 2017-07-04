@@ -71,9 +71,7 @@
 		let tKey, tMessage;
 		for(tLine of tLines) {
 			[tKey, tMessage] = splitOnce(tLine, "=");
-			tMessage = highlightHTML(tMessage);
-			tMessage = highlightStringSubstitution(tMessage);
-			tMessage = highlightSex(tMessage);
+			tMessage = highlightSyntaxAll(tMessage);
 			tMessage = `<pre>${tMessage}</pre>`;
 			tHTML += `<tr><th><div class="overflow">${tKey}</div></th><td>${tMessage}</td></tr>`;
 		}
@@ -109,6 +107,15 @@
 		for(tElem of pList) {
 			tElem.addEventListener(pEventName, pCallback);
 		}
+	}
+	
+	function highlightSyntaxAll(pString) {
+		pString = highlightHTML(pString);
+		pString = highlightStringSubstitution(pString);
+		pString = highlightSex(pString);
+		pString = highlightSpeaker(pString);
+		pString = highlightDialogBreak(pString);
+		return pString;
 	}
 	
 	function highlightHTML(pString) {
@@ -151,6 +158,14 @@
 	
 	function highlightSex(pString) {
 		return pString.replace(/\((.*?)\|(.*?)\)/g, "<span class='sex'>(<span class='m'>$1</span>|<span class='f'>$2</span>)</span>");
+	}
+	
+	function highlightSpeaker(pString) {
+		return pString.replace(/(^#[A-Za-z_]*:)/gm, "<span class='speaker'>$1</span>");
+	}
+	
+	function highlightDialogBreak(pString) {
+		return pString.replace(/(_P_)/g, "<span class='d-break'>$1</span>");
 	}
 	
 	// pData = { url:String, method:String="GET", dataType:String="text", contentType?:String, success?:String->Void, fail?:String->Void }
