@@ -33,11 +33,37 @@
 	text-align: right;
 }
 .result-table tbody th .overflow {
+	display: inline-block;
 	max-width: 225px;
 	overflow-x: auto;
 }
+.result-table tbody th .permalink {
+	float: left;
+	font-size: 80%;
+	line-height: 21px;
+	color: grey;
+	text-decoration: none;
+}
+.result-table tbody th .permalink:hover {
+	color: lightgrey;
+	text-decoration: underline;
+}
 .result-table tbody td {
 	text-align: left;
+}
+.result-table tr:target+tr {
+	border: 5px double orange;
+}
+.result-table tr:target+tr .permalink {
+	color: orange;
+}
+/* This lets you jump to the row further down the page (instead of it resting along the top) */
+/* https://css-tricks.com/hash-tag-links-padding/ */
+.result-table .permalink-target {
+	position: absolute;
+	margin-top: -250px;
+	visibility: hidden;
+	pointer-events: none;
 }
 
 .result-table xmp, .result-table pre {

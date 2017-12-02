@@ -13,6 +13,10 @@ header {
 	margin: 0 auto;
 	border-bottom: 5px solid currentColor;
 }
+#nav {
+	position: relative;
+	top: -12px;
+}
 #content {
 	
 }

@@ -1,6 +1,21 @@
 (function(){
-	let game = "transformice";
+	let game = "tfm";
 	let lang = "en";
+	let id = null;
+	
+	let startHash = window.location.hash.substr(1);
+	if(startHash) {
+		let [tGame, tLang, tID] = startHash.split(",");
+		if(tID) {
+			lang = tLang;
+			game = tGame;
+			id = tID;
+			doRetrieval();
+		}
+	}
+	if(!id) {
+		setActiveStep("game-step");
+	}
 	
 	/**************
 	* Event Listeners
@@ -30,10 +45,14 @@
 		setActiveStep("fetch-step");
 		fetchI18nData(game, lang, (pData) => {
 			addDataToPage(pData);
+			if(id) {
+				window.location.hash = startHash; // Reactivate hash to go to ID
+			}
 		}, doDataRetreivalError);
 	}
 	
 	function onResetClicked(e) {
+		id = null;
 		setActiveStep("game-step");
 	}
 	
@@ -42,9 +61,13 @@
 	**************/
 	function setActiveStep(pID) {
 		let tSteps = document.querySelectorAll(".step");
-		for(tStep of tSteps) {
-			tStep.classList.remove("active");
+		for(let i = 0; i < tSteps.length; i++) {
+			tSteps[i].classList.remove("active");
 		}
+		// Doesn't work in Edge
+		// for(tStep of tSteps) {
+		// 	tStep.classList.remove("active");
+		// }
 		document.querySelector("#"+pID).classList.add("active");
 	}
 	
@@ -68,12 +91,15 @@
 		tHTML += "</thead>";
 		// Add table contents
 		tHTML += "<tbody>";
-		let tKey, tMessage;
+		let tKey, tMessage, tHashTag;
 		for(tLine of tLines) {
 			[tKey, tMessage] = splitOnce(tLine, "=");
 			tMessage = highlightSyntaxAll(tMessage);
 			tMessage = `<pre>${tMessage}</pre>`;
-			tHTML += `<tr><th><div class="overflow">${tKey}</div></th><td>${tMessage}</td></tr>`;
+			tHashTag = `${game},${lang},${tKey}`;
+			// Extra row before it is needed for some CSS styling
+			tHTML += `<tr id="${tHashTag}" class="permalink-target"></tr>`
+				+`<tr><th><a class='permalink' href="#${tHashTag}">#</a><div class="overflow">${tKey}</div></th><td>${tMessage}</td></tr>`;
 		}
 		tHTML += "</tbody>";
 		tHTML += "</table>";
@@ -129,7 +155,7 @@
 		let tMatches = tRegex.exec(pString);
 		if(tMatches) {
 			let [tAllMatched, tTag, tAttribs, tContent, tEnd] = tMatches;
-			console.log(tMatches);
+			// console.log(tMatches);
 			tContent = highlightHTMLRecurrsive(tContent);
 			let tFormattedCode;
 			switch(tTag) {

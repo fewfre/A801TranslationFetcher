@@ -15,8 +15,12 @@ $game = "transformice";
 if(isset($_GET["game"])) {
 	switch($_GET["game"]) {
 		case "transformice":
+		case "tfm":
+			$game = "transformice";
+			break;
 		case "deadmaze":
-			$game = $_GET["game"];
+		case "dm":
+			$game = "deadmaze";
 			break;
 		default:
 			sendError(400, "No recognized game '{$_GET["game"]}'", $format);
@@ -43,8 +47,13 @@ switch($game) {
 * Get Data
 *********/
 try {
-	$data = externalFetch($url);
-	$data = gzuncompress($data);
+	$i = 3;
+	do {
+		if($i < 3) usleep(500000);
+		$i--;
+		$data = externalFetch($url);
+		$data = gzuncompress($data);
+	} while (!$data && $i > 0);
 	if(!$data) {
 		sendError(400, "No lang file found for '$game': $language", $format);
 	}

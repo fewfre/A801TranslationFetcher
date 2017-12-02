@@ -1,3 +1,9 @@
+== V1.3 - 2 December 2017 ==
+- Re-added project list to header and fixed it
+- Added "permalinks". if the page is loaded with a permalink hash, it will skip directly to loading that file and then jump to the value.
+- To avoid load errors, if translation file can't be fetched the php file will try 2 more times.
+
+
 == V1.2 - 4 July 2017 ==
 - Added syntax highlighting for "_P_" and "#SPEAKER_NAME:" Dead Maze syntax
 

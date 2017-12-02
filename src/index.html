@@ -22,12 +22,15 @@
 				<p>Fetches translation files for Atelier 801 games, decompresses them, then displays them.</p>
 			</section>
 			<section>
-				<div id="game-step" class="step active">
+				<div id="init-step" class="step active">
+					<h2>Loading...</h2>
+				</div>
+				<div id="game-step" class="step">
 					<h2>Choose the game</h2>
 					
 					<div class="step-cont">
-						<button class="step-btn js-game-chosen" data-game="transformice">Transformice*</button>
-						<button class="step-btn js-game-chosen" data-game="deadmaze">Dead Maze^</button>
+						<button class="step-btn js-game-chosen" data-game="tfm">Transformice*</button>
+						<button class="step-btn js-game-chosen" data-game="dm">Dead Maze^</button>
 					</div>
 					
 					<p>*Transformice file also contains translations for Fortoresse, Bouboum, and Nekodancer.</p>
@@ -85,5 +88,7 @@
 		<span class="flattr-cont"><script id='fb83np7'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//button.flattr.com/view/?fid=x29v5q&button=compact&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=20;f.width=110;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb83np7');</script></span>
 	</footer>
 	<script src="js/index.js"></script>
+	<link rel="stylesheet" href="/a801/project_list.css"></link>
+	<script src="/a801/project_list.js"></script>
 </body>
 </html>
