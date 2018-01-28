@@ -1,20 +1,35 @@
 (function(){
-	let game = "tfm";
-	let lang = "en";
+	// Grabs the url vars
+	var URL_VARS = {}; window.location.href.split("#")[0].replace( /[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value){URL_VARS[key] = value;} );
+	
+	let game = null;//"tfm";
+	let lang = null;//"en";
 	let id = null;
 	
-	let startHash = window.location.hash.substr(1);
-	if(startHash) {
-		let [tGame, tLang, tID] = startHash.split(",");
-		if(tID) {
-			lang = tLang;
-			game = tGame;
-			id = tID;
+	setActiveStep("game-step");
+	
+	if(URL_VARS.g) {
+		game = URL_VARS.g;
+		lang = URL_VARS.l;
+		id = URL_VARS.id;
+		if(lang && game) {
 			doRetrieval();
 		}
-	}
-	if(!id) {
-		setActiveStep("game-step");
+		else if(game) {
+			setActiveStep("lang-step");
+		}
+	} else {
+		// Backwards compatability for old hash links
+		let startHash = window.location.hash.substr(1);
+		if(startHash) {
+			let [tGame, tLang, tID] = startHash.split(",");
+			if(tID) {
+				lang = tLang;
+				game = tGame;
+				id = tID;
+				doRetrieval();
+			}
+		}
 	}
 	
 	/**************
@@ -28,10 +43,12 @@
 	function onGameClicked(e) {
 		setActiveStep("lang-step");
 		game = e.target.dataset.game;
+		updateUrl();
 	}
 	
 	function onLangClicked(e) {
 		lang = e.target.dataset.lang;
+		updateUrl();
 		doRetrieval();
 	}
 	
@@ -43,17 +60,40 @@
 	
 	function doRetrieval() {
 		setActiveStep("fetch-step");
-		fetchI18nData(game, lang, (pData) => {
+		fetchI18nData(game, lang, (pData, xmlhttp) => {
 			addDataToPage(pData);
+			updateUrl();
 			if(id) {
-				window.location.hash = startHash; // Reactivate hash to go to ID
+				// Reactivate hash to go to ID
+				onPermaClick(id);
+				// window.location.href = "#"+startHash;
+			}
+			
+			if(xmlhttp.getResponseHeader("Last-Fetched-From-Game")) {
+				document.querySelector("#result-timestamp").innerHTML = "Translation files last cached: "+xmlhttp.getResponseHeader("Last-Fetched-From-Game");
+			} else {
+				document.querySelector("#result-timestamp").innerHTML = "";
 			}
 		}, doDataRetreivalError);
 	}
 	
 	function onResetClicked(e) {
+		game = null;
+		lang = null;
 		id = null;
+		updateUrl();
 		setActiveStep("game-step");
+	}
+	
+	function updateUrl() {
+		history.replaceState({}, null, getShareUrl(game, lang, id));
+	}
+	function getShareUrl(game, lang, id) {
+		var tParams = [];
+		if(id) { tParams.push("id="+id); }
+		if(game) { tParams.push("g="+game); }
+		if(lang) { tParams.push("l="+lang); }
+		return location.origin + location.pathname + (tParams.length > 0 ? "?"+tParams.join("&") : "");
 	}
 	
 	/**************
@@ -96,15 +136,33 @@
 			[tKey, tMessage] = splitOnce(tLine, "=");
 			tMessage = highlightSyntaxAll(tMessage);
 			tMessage = `<pre>${tMessage}</pre>`;
-			tHashTag = `${game},${lang},${tKey}`;
+			tHashTag = tKey;
 			// Extra row before it is needed for some CSS styling
 			tHTML += `<tr id="${tHashTag}" class="permalink-target"></tr>`
-				+`<tr><th><a class='permalink' href="#${tHashTag}">#</a><div class="overflow">${tKey}</div></th><td>${tMessage}</td></tr>`;
+				+`<tr><th><a class='permalink' href="${getShareUrl(game, lang, tKey)}" onclick="onPermaClick('${tKey}'); return false;">#</a><div class="overflow">${tKey}</div></th><td>${tMessage}</td></tr>`;
 		}
 		tHTML += "</tbody>";
 		tHTML += "</table>";
 		document.querySelector("#result").innerHTML = tHTML;
+		
+		// Allow searching of table
+		$(".result-table").tablesorter({
+			widthFixed: true,
+			removeRows: true,
+			widgets : ['filter', 'columns'],
+			widgetOptions: {
+				filter_placeholder: { search:"Search column..." },
+				filter_searchDelay : 500,
+			}
+		});
 	}
+	
+	function onPermaClick(pKey) {
+		id = pKey;
+		window.location.href = "#"+pKey; // Jumps user to id
+		updateUrl(); // Clears the hash
+	}
+	window.onPermaClick = onPermaClick;
 	
 	function doDataRetreivalError(pMessage) {
 		setActiveStep("error-step");
@@ -214,7 +272,7 @@
 							if(pData.fail) { pData.fail("Error parsing data as "+pData.dataType); }
 							return;
 						}
-						pData.success(tResponse);
+						pData.success(tResponse, xmlhttp);
 					}
 				}
 				else {

@@ -15,6 +15,7 @@
 .result-table {
 	border-collapse: collapse;
 	max-width: 100%;
+	min-width: 100%;
 	border: 1px solid #b2af9c;
 }
 .result-table tr {
@@ -30,6 +31,8 @@
 	background: #444;
 }
 .result-table tbody th {
+	min-width: 235px;
+	max-width: 235px;
 	text-align: right;
 }
 .result-table tbody th .overflow {

@@ -1,3 +1,9 @@
+== V1.4 - 27 January 2018 ==
+- Share links now user URL variables instead of hash string
+- Translation file is now cached on the server to save time fetching it.
+- Added functionality for searching columns for specific text.
+
+
 == V1.3 - 2 December 2017 ==
 - Re-added project list to header and fixed it
 - Added "permalinks". if the page is loaded with a permalink hash, it will skip directly to loading that file and then jump to the value.

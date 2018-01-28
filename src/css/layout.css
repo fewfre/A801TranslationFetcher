@@ -45,3 +45,49 @@ p {
 ul {
 	margin: 10px 0;
 }
+
+/***************************
+* Table sorter - moved here as we don't want the theme, just some core parts
+****************************/
+.tablesorter-default .tablesorter-filter-row.hideme td{
+    padding:2px;
+    margin:0;
+    line-height:0;
+    cursor:pointer
+}
+.tablesorter-default .tablesorter-filter-row.hideme *{
+    height:1px;
+    min-height:0;
+    border:0;
+    padding:0;
+    margin:0;
+    /* don't use visibility: hidden because it disables tabbing */
+    opacity:0
+}
+.tablesorter-default .tablesorter-filter-row {
+	text-align: center;
+}
+.tablesorter-default .tablesorter-filter {
+	width: calc(100% - 8px);
+	height: auto;
+	margin: 2px auto;
+	padding: 4px;
+	background-color: #fff;
+	border: 1px solid #bbb;
+	color: #333;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transition: height .1s ease;
+	-moz-transition: height .1s ease;
+	-o-transition: height .1s ease;
+	transition: height .1s ease;
+}
+.tablesorter .filtered{
+    display:none
+}
+.tablesorter .tablesorter-errorRow td{
+    text-align:center;
+    cursor:pointer;
+    background-color:#e6bf99
+}

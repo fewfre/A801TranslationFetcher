@@ -36,71 +36,96 @@ $language = isset($_GET["lang"]) ? clean($_GET["lang"]) : "en";
 *********/
 switch($game) {
 	case "transformice":
-		$url = "http://transformice.com/langues/tfz_$language";
+		$filename = "tfz_$language";
+		$url = "http://transformice.com/langues/$filename";
 		break;
 	case "deadmaze":
-		$url = "http://transformice.com/langues/deadmeat_$language";
+		$filename = "deadmeat_$language";
+		$url = "http://transformice.com/langues/$filename";
 		break;
 }
 
 /********
-* Get Data
+* Check if cache data exists and is up-to-date
 *********/
-try {
-	$i = 3;
-	do {
-		if($i < 3) usleep(500000);
-		$i--;
-		$data = externalFetch($url);
-		$data = gzuncompress($data);
-	} while (!$data && $i > 0);
-	if(!$data) {
+$local_file = "i18n/$filename.$format";
+if(file_exists($local_file) && ($localDate = filemtime($local_file)) >= externalLastModified($url)) {
+	// If cached file is good
+	header('Last-Fetched-From-Game: '.gmdate('D, d M Y H:i:s ', $localDate) . 'GMT');
+	$data = file_get_contents($local_file);
+} else {
+	// If file needs to be fetched
+	/********
+	* Get Data
+	*********/
+	try {
+		$i = 3;
+		do {
+			if($i < 3) usleep(500000);
+			$i--;
+			$data = externalFetch($url);
+			$data = gzuncompress($data);
+		} while (!$data && $i > 0);
+		if(!$data) {
+			sendError(400, "No lang file found for '$game': $language", $format);
+		}
+	}
+	catch (Exception $e) {
 		sendError(400, "No lang file found for '$game': $language", $format);
 	}
+	// $data = utf8_decode($data);
+	// iconv("UTF-8", "CP1252", $data);
+	// echo mb_detect_encoding($str, "auto")." --- ";
+	// $data = htmlspecialchars($data);
+	
+	/********
+	* Return Data
+	*********/
+	switch($format) {
+		case "json":
+			$data = charset_decode_utf_8($data);
+			$split_char = "&#164;";
+			// $split_char = "\xa4";
+			$data = rtrim($data, $split_char);
+			$data = explode($split_char, $data);
+			// json_encode can't handle UTF-8 characters https://stackoverflow.com/q/6771938/1411473
+			// mb_internal_encoding('UTF-8');
+			// $data=array_map('utf8_encode',$data);
+			
+			// Convert array to json
+			$data = json_encode($data);
+			break;
+		case "text":
+			// Just use the default data
+			// $data = charset_decode_utf_8($data);
+			break;
+		case "html":
+		default:
+			$data = charset_decode_utf_8($data);
+			$data = "<html><body>$data</body></html>";
+			break;
+	}
+	if(!is_dir("i18n")) { mkdir("i18n"); }
+	file_put_contents($local_file, $data);
 }
-catch (Exception $e) {
-	sendError(400, "No lang file found for '$game': $language", $format);
-}
-// $data = utf8_decode($data);
-// iconv("UTF-8", "CP1252", $data);
-// echo mb_detect_encoding($str, "auto")." --- ";
-// $data = htmlspecialchars($data);
 
-/********
-* Return Data
-*********/
+# Set appropriate headers
 switch($format) {
 	case "json":
 		header('Content-type: application/json charset=utf-8');
-		$data = charset_decode_utf_8($data);
-		$split_char = "&#164;";
-		// $split_char = "\xa4";
-		$data = rtrim($data, $split_char);
-		$data = explode($split_char, $data);
-		// json_encode can't handle UTF-8 characters https://stackoverflow.com/q/6771938/1411473
-		// mb_internal_encoding('UTF-8');
-		// $data=array_map('utf8_encode',$data);
-		
-		// Convert array to json
-		$data = json_encode($data);
 		break;
 	case "text":
 		header('Content-Type: text/plain charset=utf-8');
-		// $data = charset_decode_utf_8($data);
 		break;
 	case "html":
-	default:
 		header('Content-Type: text/html charset=utf-8');
-		$data = charset_decode_utf_8($data);
-		$data = "<html><body>$data</body></html>";
 		break;
 }
-
 echo $data;
 
-function externalFetch($source) {
+function externalFetch($url) {
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $source);
+	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_SSLVERSION,3);
 	$data = curl_exec ($ch);
@@ -108,6 +133,14 @@ function externalFetch($source) {
 	curl_close ($ch);
 	
 	return $data;
+}
+
+function externalLastModified($url) {
+	$h = get_headers($url, 1);
+	if (!($h || strstr($h[0], '200') === false)) {
+		return new \DateTime($h['Last-Modified']);//php 5.3
+	}
+	return null;
 }
 
 // http://php.net/manual/en/function.utf8-decode.php#116671
