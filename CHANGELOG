@@ -1,3 +1,7 @@
+== V1.5 - 15 February 2018 ==
+- Game buttons now default to English, with language selection buttons below them.
+
+
 == V1.4 - 27 January 2018 ==
 - Share links now user URL variables instead of hash string
 - Translation file is now cached on the server to save time fetching it.

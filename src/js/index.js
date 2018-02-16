@@ -36,6 +36,7 @@
 	* Event Listeners
 	**************/
 	addEventListenerAll(document.querySelectorAll(".js-game-chosen"), "click", onGameClicked);
+	addEventListenerAll(document.querySelectorAll(".js-game-lang-chosen"), "click", onGameLangClicked);
 	addEventListenerAll(document.querySelectorAll(".js-lang-chosen"), "click", onLangClicked);
 	addEventListenerAll(document.querySelectorAll(".js-lang-chosen-custom"), "click", onCustomLangEntered);
 	addEventListenerAll(document.querySelectorAll(".js-reset"), "click", onResetClicked);
@@ -47,6 +48,13 @@
 	}
 	
 	function onLangClicked(e) {
+		lang = e.target.dataset.lang;
+		updateUrl();
+		doRetrieval();
+	}
+	
+	function onGameLangClicked(e) {
+		game = e.target.dataset.game;
 		lang = e.target.dataset.lang;
 		updateUrl();
 		doRetrieval();
