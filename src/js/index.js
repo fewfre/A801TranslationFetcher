@@ -226,6 +226,7 @@
 			let tFormattedCode;
 			switch(tTag) {
 				case "img":
+					tAttribs = tAttribs.replace("http:", "https:");
 					tFormattedCode = `<img ${tAttribs} title="${htmlEscape(tAttribs)}" />${tContent}`;
 					break;
 				case "font":

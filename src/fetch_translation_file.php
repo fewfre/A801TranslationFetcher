@@ -22,6 +22,10 @@ if(isset($_GET["game"])) {
 		case "dm":
 			$game = "deadmaze";
 			break;
+		case "transformice_adventures":
+		case "tfmadv":
+			$game = "transformice_adventures";
+			break;
 		default:
 			sendError(400, "No recognized game '{$_GET["game"]}'", $format);
 			break;
@@ -41,6 +45,10 @@ switch($game) {
 		break;
 	case "deadmaze":
 		$filename = "deadmeat_$language";
+		$url = "http://transformice.com/langues/$filename";
+		break;
+	case "transformice_adventures":
+		$filename = "tfmadv_$language";
 		$url = "http://transformice.com/langues/$filename";
 		break;
 }
@@ -64,14 +72,16 @@ if(file_exists($local_file) && ($localDate = filemtime($local_file)) >= external
 			if($i < 3) usleep(500000);
 			$i--;
 			$data = externalFetch($url);
-			$data = gzuncompress($data);
+			if($game != "transformice_adventures") {
+				$data = gzuncompress($data);
+			}
 		} while (!$data && $i > 0);
 		if(!$data) {
-			sendError(400, "No lang file found for '$game': $language", $format);
+			sendError(400, "No lang file found for '$game': $language - (1) $filename", $format);
 		}
 	}
 	catch (Exception $e) {
-		sendError(400, "No lang file found for '$game': $language", $format);
+		sendError(400, "No lang file found for '$game': $language - (2) $filename", $format);
 	}
 	// $data = utf8_decode($data);
 	// iconv("UTF-8", "CP1252", $data);

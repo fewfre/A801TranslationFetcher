@@ -24,7 +24,7 @@ section {
 	margin: 15px 0;
 	padding: 5px 10px 35px;
 	background: #f2f2f2;
-	background: url('http://www.transformice.com/wp-content/themes/Themice/images/lignepierre.png') no-repeat bottom;
+	background: url('https://www.transformice.com/wp-content/themes/Themice/images/lignepierre.png') no-repeat bottom;
 	background-size: 100% auto;
 }
 footer {
@@ -35,6 +35,13 @@ footer {
 	border-top: 2px solid currentColor;
 	padding: 5px 5px 5px;
 	clear: both;
+}
+footer a {
+	color: white;
+	text-decoration: none;
+}
+footer a:hover {
+	text-decoration: underline;
 }
 .flattr-cont {
 	float: right;

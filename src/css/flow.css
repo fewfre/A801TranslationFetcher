@@ -73,6 +73,7 @@
 	max-width: 800px;
 	white-space: pre-wrap;
 	word-wrap: break-word;
+	margin: 0;
 }
 .i18n-highlight .subst {
 	color: red;
