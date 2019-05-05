@@ -5,6 +5,7 @@ if(isset($_GET["format"])) {
 	switch($_GET["format"]) {
 		case "json":
 		case "text":
+		case "table":
 			$format = $_GET["format"];
 			break;
 	}
@@ -57,7 +58,7 @@ switch($game) {
 * Check if cache data exists and is up-to-date
 *********/
 $local_file = "i18n/$filename.$format";
-if(file_exists($local_file) && ($localDate = filemtime($local_file)) >= externalLastModified($url)) {
+if(false){//file_exists($local_file) && ($localDate = filemtime($local_file)) >= externalLastModified($url)) {
 	// If cached file is good
 	header('Last-Fetched-From-Game: '.gmdate('D, d M Y H:i:s ', $localDate) . 'GMT');
 	$data = file_get_contents($local_file);
@@ -109,6 +110,9 @@ if(file_exists($local_file) && ($localDate = filemtime($local_file)) >= external
 			// Just use the default data
 			// $data = charset_decode_utf_8($data);
 			break;
+		case "table":
+			include("format_to_table.php");
+			break;
 		case "html":
 		default:
 			$data = charset_decode_utf_8($data);
@@ -125,6 +129,7 @@ switch($format) {
 		header('Content-type: application/json charset=utf-8');
 		break;
 	case "text":
+	case "table":
 		header('Content-Type: text/plain charset=utf-8');
 		break;
 	case "html":
