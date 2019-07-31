@@ -27,6 +27,9 @@ if(isset($_GET["game"])) {
 		case "tfmadv":
 			$game = "transformice_adventures";
 			break;
+		case "antares":
+			$game = "antares";
+			break;
 		default:
 			sendError(400, "No recognized game '{$_GET["game"]}'", $format);
 			break;
@@ -39,17 +42,24 @@ $language = isset($_GET["lang"]) ? clean($_GET["lang"]) : "en";
 /********
 * Build url
 *********/
+$compression = false;
 switch($game) {
 	case "transformice":
 		$filename = "tfz_$language";
 		$url = "http://transformice.com/langues/$filename";
+		$compression = "gz";
 		break;
 	case "deadmaze":
 		$filename = "deadmeat_$language";
 		$url = "http://transformice.com/langues/$filename";
+		$compression = "gz";
 		break;
 	case "transformice_adventures":
 		$filename = "tfmadv_$language";
+		$url = "http://transformice.com/langues/$filename";
+		break;
+	case "antares":
+		$filename = "antares_$language";
 		$url = "http://transformice.com/langues/$filename";
 		break;
 }
@@ -73,7 +83,7 @@ if(false){//file_exists($local_file) && ($localDate = filemtime($local_file)) >=
 			if($i < 3) usleep(500000);
 			$i--;
 			$data = externalFetch($url);
-			if($game != "transformice_adventures") {
+			if($compression == "gz") {
 				$data = gzuncompress($data);
 			}
 		} while (!$data && $i > 0);
