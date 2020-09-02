@@ -125,8 +125,8 @@
 		}
 		setActiveStep("result-step");
 		// let tLines = pData;
-		pData = pData.replace(/¤$/, ''); // Replace extra one at end
-		let tLines = pData.split("¤");
+		pData = pData.replace(/(¤|\n-\s*)$/, ''); // Replace extra one at end
+		let tLines = pData.split(/¤|\n-\n/);
 		// let tLines = pData.split("&#164;");
 		let tHTML = "";
 		tHTML += "<table class='result-table'>";
