@@ -9,13 +9,17 @@ body {
 	outline: #c2c2c2 2px solid;
 }
 header {
-	padding: 8px 25px 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
+	padding: 7px 7px 7px 15px;
 	margin: 0 auto;
 	border-bottom: 5px solid currentColor;
 }
-#nav {
-	position: relative;
-	top: -12px;
+.header-tools {
+	display: flex;
+	align-items: center;
 }
 #content {
 	
